@@ -1,15 +1,28 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+  <h1 class="text-3xl font-bold underline">
+    Hello world!
+  </h1>
+
+  <Feed :feedUrl="feedUrl" :name="name" :limit="limit" :load-more="true" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Feed from './components/Feed.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Feed
+  },
+
+  data() {
+    return {
+      feedUrl: "https://blog.love4dev.ru/rss.xml",
+      name: "",
+      limit: 4
+    };
   }
 }
 </script>
