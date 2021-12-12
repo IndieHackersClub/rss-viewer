@@ -2,6 +2,10 @@
 
 A simple beautiful RSS Viewer with VueJS
 
+Blog white screenshot  |  Blog dark screenshot
+:-------------------------:|:-------------------------:
+![Blog white screenshot](docs/blog-w.png)  |  ![Blog dark screenshot](docs/blog-d.png)
+
 ## Project setup
 ```
 npm install
