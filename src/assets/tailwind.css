@@ -3,3 +3,19 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.dark {
+    --backgroundColorPrimary: #2f3437;
+    --backgroundColorSecondary: #3f4447;
+    --backgroundColorThird: #363b3e;
+    --colorPrimary: #ffffff;
+    --colorSecondary: #5f666a;
+}
+
+.light {
+    --backgroundColorPrimary: #ffffff;
+    --backgroundColorSecondary: #f2f2f2;
+    --backgroundColorThird: #f9f9fa;
+    --colorPrimary: #2f3437;
+    --colorSecondary: #5f666a;
+}

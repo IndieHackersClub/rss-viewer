@@ -1,8 +1,24 @@
 module.exports = {
   purge: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      textColor: {
+        main: "var(--colorPrimary)",
+        sub: "var(--colorSecondary)",
+      },
+      backgroundColor: {
+        main: "var(--backgroundColorPrimary)",
+        "code-block": "var(--backgroundColorSecondary)",
+        blockquote: "var(--backgroundColorThird)",
+      },
+      borderColor: {
+        main: "var(--colorPrimary)",
+      },
+      divideColor: {
+        main: "var(--colorPrimary)",
+      },
+    },
   },
   variants: {
     extend: {},
