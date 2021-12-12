@@ -1,19 +1,20 @@
 <template>
-  <div v-if="error" class="error">{{error}}</div>
-  <div v-else class="feed">
-    <div class="flex flex-col max-w-5xl px-2 mx-auto my-2 space-y-6">
+  <div class="flex flex-col max-w-5xl px-2 mx-auto my-2 space-y-6">
+    <Error v-if="error" :description="error"/>
+    <template v-else>
       <Article
           v-for="(article, index) of getArticles()"
           v-bind:key="index"
           v-bind:article="article"
       />
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import Article from "./Article";
 import Parser from "rss-parser";
+import Error from "./Error";
 
 const CORS_PROXY = "https://cors.love4dev.workers.dev/corsproxy/?apiurl="
 
@@ -27,6 +28,7 @@ export default {
   name: 'Feeds',
 
   components: {
+    Error,
     Article: Article,
   },
 
@@ -46,39 +48,30 @@ export default {
   },
 
   created() {
-    this.fetchData();
+    let data = this.getWithExpiry('feed')
+
+    if (!data) {
+      this.fetchData();
+    } else {
+      this.feed = data
+    }
   },
 
   methods: {
-
     async fetchData() {
       this.error = "";
       this.loading = true;
-      this.feed = {};
-      const feed = await parser.parseURL(CORS_PROXY + this.feedUrl);
-      console.log(feed.title); // feed will have a `foo` property, type as a string
-
-      this.feed = feed;
-
-      feed.items.forEach(item => {
-        console.log(item.title + ':' + item.link) // item will have a `bar` property type as a number
-      });
-    },
-    async fetchData2() {
-      this.error = "";
-      this.loading = true;
-      this.feed = {};
       try {
         const data = await fetch(CORS_PROXY + this.feedUrl);
         if (data.ok) {
           const text = await data.text();
-          const parser = new Parser();
           await parser.parseString(text, (err, parsed) => {
             this.loading = false;
             if (err) {
               this.error = `Error occurred while parsing RSS Feed ${err.toString()}`;
             } else {
               this.feed = parsed;
+              this.setWithExpiry('feed', this.feed, this.feed.ttl * 60)
             }
           });
         } else {
@@ -96,14 +89,10 @@ export default {
     },
 
     getArticles() {
-      if (this.feed.items && this.feed.items) {
-        return this.feed.items.slice(0, this.limit);
+      if (this.feed.items) {
+        return this.feed.items;
       }
-    }
+    },
   }
 }
 </script>
-
-<style scoped>
-
-</style>
