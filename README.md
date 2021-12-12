@@ -1,4 +1,6 @@
-# viewer
+# Rss viewer
+
+A simple beautiful RSS Viewer with VueJS
 
 ## Project setup
 ```
