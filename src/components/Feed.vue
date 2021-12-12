@@ -1,14 +1,7 @@
 <template>
   <div v-if="error" class="error">{{error}}</div>
   <div v-else class="feed">
-    <h1 v-if="name">{{name}}</h1>
-    <h1 v-else>{{feed.title}}</h1>
-    <div v-if="loading" class="spinner">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
-    </div>
-    <div class="articles-container">
+    <div class="flex flex-col max-w-5xl px-2 mx-auto my-2 space-y-6">
       <Article
           v-for="(article, index) of getArticles()"
           v-bind:key="index"
@@ -20,9 +13,15 @@
 
 <script>
 import Article from "./Article";
-import RSSParser from "rss-parser";
+import Parser from "rss-parser";
 
 const CORS_PROXY = "https://cors.love4dev.workers.dev/corsproxy/?apiurl="
+
+const parser = new Parser({
+  customFields: {
+    item: ['cover_image']
+  }
+});
 
 export default {
   name: 'Feeds',
@@ -51,7 +50,21 @@ export default {
   },
 
   methods: {
+
     async fetchData() {
+      this.error = "";
+      this.loading = true;
+      this.feed = {};
+      const feed = await parser.parseURL(CORS_PROXY + this.feedUrl);
+      console.log(feed.title); // feed will have a `foo` property, type as a string
+
+      this.feed = feed;
+
+      feed.items.forEach(item => {
+        console.log(item.title + ':' + item.link) // item will have a `bar` property type as a number
+      });
+    },
+    async fetchData2() {
       this.error = "";
       this.loading = true;
       this.feed = {};
@@ -59,7 +72,7 @@ export default {
         const data = await fetch(CORS_PROXY + this.feedUrl);
         if (data.ok) {
           const text = await data.text();
-          const parser = new RSSParser();
+          const parser = new Parser();
           await parser.parseString(text, (err, parsed) => {
             this.loading = false;
             if (err) {

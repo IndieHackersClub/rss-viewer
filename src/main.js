@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import HelperMixin from "./mixins/HelperMixin"
 import './assets/tailwind.css'
 
-createApp(App).mount('#app')
+createApp(App).mixin(HelperMixin).mount('#app')

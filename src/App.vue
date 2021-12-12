@@ -1,20 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <div class="theme-light min-w-xs min-h-screen bg-main text-main font-poppins">
+    <Header/>
 
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-
-  <Feed :feedUrl="feedUrl" :name="name" :limit="limit" :load-more="true" />
+    <Feed :feedUrl="feedUrl" :name="name" :limit="limit" :load-more="true" />
+    <Footer/>
+  </div>
 </template>
 
 <script>
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import Feed from './components/Feed.vue'
 
 export default {
   name: 'App',
   components: {
-    Feed
+    Header,
+    Footer,
+    Feed,
   },
 
   data() {
@@ -26,14 +29,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

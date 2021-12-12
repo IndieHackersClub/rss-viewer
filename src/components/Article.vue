@@ -1,61 +1,32 @@
 <template>
-  <div class="article">
-    <div class="title">
-      <a :href="article.link" target="_blank">
-        <h3>{{ article.title }}</h3>
-      </a>
+  <a class="w-full" :href="article.link" target="_blank">
+    <div class="flex flex-col my-4 space-y-3">
+      <div class="text-2xl font-bold no-underline sm:text-4xl hover:underline">{{ article.title }}</div>
+      <div class="flex flex-col space-x-0 space-y-2 text-base font-normal sm:space-x-2 sm:space-y-0 sm:flex-row">
+        <div class="flex flex-row space-x-2">
+          <span>By</span>
+          <a href="https://twitter.com/OCharnyshevich" target="_blank" class="font-bold hover:underline">{{ article.creator }}</a>
+        </div>
+        <div class="flex flex-row space-x-2">
+          <span>on</span>
+          <span class="font-bold">{{ getDate() }}</span>
+        </div>
+      </div>
+        <img class="w-full" :src="article.cover_image" :alt="article.title"/>
+      <div class="w-full text-lg font-medium leading-normal sm:text-2xl" v-html="trim(article.contentSnippet, 250)" />
     </div>
-    <div class="body">
-      <p class="content" v-html="article.content"></p>
-    </div>
-    <div class="footer">
-      <span class="hostname">{{ this.getHostname() }}</span>
-      <span v-if="article.isoDate" class="middot">&bull;</span>
-      <span class="datetime">{{ this.getDateTime() }}</span>
-    </div>
-  </div>
+  </a>
 </template>
 
 <script>
-const parseDate = tdate => {
-  const systemDate = new Date(Date.parse(tdate));
-  const userDate = new Date();
-  const diff = Math.floor((userDate - systemDate) / 1000);
-  if (diff < 59) {
-    return diff + "s";
-  }
-  if (diff <= 3540) {
-    return Math.round(diff / 60) + "m";
-  }
-  if (diff <= 86400) {
-    return Math.round(diff / 3600) + "h";
-  }
-  if (diff < 604800) {
-    return Math.round(diff / 86400) + "d";
-  }
-  return systemDate.toString().substring(4, 10);
-};
 export default {
   name: "Article",
   props: ["article"],
   methods: {
-    getHostname() {
-      try {
-        const urlObj = new URL(this.article.link);
-        return urlObj.hostname.replace("www.", "").replace("ww2.", "");
-      } catch (e) {
-        console.error(e.toString());
-      }
-    },
-    getDateTime() {
-      if (this.article.isoDate) {
-        return parseDate(this.article.isoDate);
-      }
+    getDate() {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(this.article.isoDate).toLocaleDateString("en-US", options); // Saturday, September 17, 2016
     }
   }
 };
 </script>
-
-<style scoped>
-
-</style>
