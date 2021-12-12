@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col max-w-5xl px-2 mx-auto my-2 space-y-6">
+<!--    TODO: Add loader-->
     <Error v-if="error" :description="error"/>
     <template v-else>
       <Article
@@ -16,6 +17,7 @@ import Article from "./Article";
 import Parser from "rss-parser";
 import Error from "./Error";
 
+// @see https://developers.cloudflare.com/workers/examples/cors-header-proxy
 const CORS_PROXY = "https://cors.love4dev.workers.dev/corsproxy/?apiurl="
 
 const parser = new Parser({
